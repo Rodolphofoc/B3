@@ -99,14 +99,20 @@ public class QueueConsumerService: IQueueConsumerService
                        ([Description]
                        ,[Status]
                        ,[Deleted]
-                       ,[IntegrationId])
+                       ,[IntegrationId]
+                       ,[CreatedAt])
+                      
                  VALUES
-                       (@Description, @Status, @Deleted, newid())";
+                       (@Description, @Status, @Deleted, newid(), @CreatedAt)";
 
         Console.WriteLine("message save");
 
+        message.CreatedAt = DateTime.Now;
 
-        await _sqlConnection.ExecuteAsync(query, message);
+        using(var conn = new SqlConnection(_sqlConnection.ConnectionString))
+        {
+            await conn.ExecuteAsync(query, message);
+        }
     }
 
     public async Task<TaskManager> GetMessage(Guid integrationId)
@@ -119,7 +125,13 @@ public class QueueConsumerService: IQueueConsumerService
                       FROM [B3].[dbo].[TaskManager]
                         WHERE IntegrationId = @IntegrationId";
 
-        return await _sqlConnection.QueryFirstOrDefaultAsync<TaskManager>(query, new { IntegrationId = integrationId });
+        TaskManager result = null;
+        using(var conn = new SqlConnection(_sqlConnection.ConnectionString))
+        {
+            result = await conn.QueryFirstOrDefaultAsync<TaskManager>(query, new { IntegrationId = integrationId });
+        }
+
+        return result;
     }
 
 
@@ -129,8 +141,14 @@ public class QueueConsumerService: IQueueConsumerService
                        SET [Description] = @Description
                           ,[Status] = @Status
                           ,[Deleted] = @Deleted
+                          ,[LastModified] = @LastModified
                      WHERE IntegrationId = @IntegrationId";
 
-        await _sqlConnection.ExecuteAsync(query, message);
+        message.LastModified = DateTime.Now;
+
+        using(var conn = new SqlConnection(_sqlConnection.ConnectionString))
+        {
+            conn.Execute(query, message);
+        }
     }
 }

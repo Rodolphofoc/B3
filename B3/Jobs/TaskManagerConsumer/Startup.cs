@@ -29,6 +29,6 @@ public class Startup
             };
         });
 
-        services.AddHostedService<RabbitMQBackgroundService>();
+        services.AddHostedService<QueueConsumerBackgroundService>();
     }
 }

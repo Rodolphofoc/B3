@@ -26,14 +26,14 @@ namespace Api.Controllers
         }
 
 
-        [HttpGet("id")]
+        [HttpGet("{integrationId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Get([FromQuery] Guid id)
+        public async Task<IActionResult> Get([FromRoute] Guid integrationId)
         {
 
             var request = new GetTaskManagerByIdQuery();
-            request.SetId(id);
+            request.SetId(integrationId);
             return Ok(await _mediator.Send(request));
         }
 
@@ -43,29 +43,28 @@ namespace Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> GetAll()
         {
-            try
-            {
-                var query = new GetTaskManagerQuery();
-
-                return Ok(await _mediator.Send(query));
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-
+            var query = new GetTaskManagerQuery();
+            return Ok(await _mediator.Send(query));
         }
 
 
-        [HttpPut("id")]
+        [HttpPut("{integrationId}")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Post([FromBody] UpdateTaskManagerCommand request, [FromQuery] Guid integrationId)
+        public async Task<IActionResult> Put([FromBody] UpdateTaskManagerCommand request, [FromRoute] Guid integrationId)
         {
             request.SetId(integrationId);
             return Ok(await _mediator.Send(request));
         }
 
+        [HttpDelete("{integrationId}")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Delete([FromRoute] Guid integrationId)
+        {
+            var request = new DeleteTaskManagerCommand();
+            request.SetId(integrationId);
+            return Ok(await _mediator.Send(request));
+        }
     }
 }

@@ -1,0 +1,30 @@
+<!-- task-list.component.html -->
+<div class="container mt-4">
+    <h2>Lista de tarefas</h2>
+  
+    <!-- Botão para adicionar nova tarefa -->
+    <a routerLink="/add" class="btn btn-primary mb-3">Add Task</a>
+  
+    <!-- Tabela de tarefas -->
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Descriçao</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of tasks">
+          <td>{{ task.description }}</td>
+          <td>{{ getStatusDescription(task.status) }}</td>
+          <td>
+            <!-- Botões de ação -->
+            <a [routerLink]="['/edit', task.integrationId]" class="btn btn-secondary btn-sm">Edit</a>
+            <button (click)="deleteTask(task.integrationId)" class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

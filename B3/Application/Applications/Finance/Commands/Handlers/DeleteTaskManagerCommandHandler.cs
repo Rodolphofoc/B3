@@ -7,36 +7,33 @@ using System.Net;
 
 namespace Applications.Finance.Commands.Handlers
 {
-    public class UpdateTaskManagerCommandHandler : IRequestHandler<UpdateTaskManagerCommand, Response>  
+    public class DeleteTaskManagerCommandHandler : IRequestHandler<DeleteTaskManagerCommand, Response>
     {
         private readonly IResponse _response;
         private readonly ITaskManagerService _taskManagerService;
         private readonly ITaskManagerRepository _taskManagerRepository;
-        private readonly ILogger<UpdateTaskManagerCommandHandler> _logger;
+        private readonly ILogger<DeleteTaskManagerCommandHandler> _logger;
 
-
-        public UpdateTaskManagerCommandHandler(IResponse response, ITaskManagerService financeService, ITaskManagerRepository taskRepository, ILogger<UpdateTaskManagerCommandHandler> logger)
+        public DeleteTaskManagerCommandHandler(IResponse response, ITaskManagerService financeService, ITaskManagerRepository taskRepository, ILogger<DeleteTaskManagerCommandHandler> logger)
         {
             _response = response;
             _taskManagerService = financeService;
             _taskManagerRepository = taskRepository;
             _logger = logger;
         }
-            
-        public async Task<Response> Handle(UpdateTaskManagerCommand request, CancellationToken cancellationToken)
+
+
+        public async Task<Response> Handle(DeleteTaskManagerCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                _logger.LogInformation("Start process to update new task in rabbitMq");
+                _logger.LogInformation("Start process to delete task in rabbitMq");
 
                 var entity = await _taskManagerRepository.FindByIdAsync(request.GetId());
 
                 if (entity is null)
                     return await _response.CreateErrorResponseAsync(HttpStatusCode.NotFound);
-
-                entity.LastModified = DateTime.Now;
-                entity.Description = request.Description;
-                entity.Status = request.Status;
+                entity.Deleted = true;
 
                 _logger.LogInformation("Start process to send task in rabbitMq");
 

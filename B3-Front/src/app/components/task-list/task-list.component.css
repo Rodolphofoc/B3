@@ -1,0 +1,22 @@
+/* styles.css */
+.table-container {
+    margin-top: 20px;
+  }
+  
+  .table {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+  }
+  
+  .table th, .table td {
+    vertical-align: middle;
+  }
+  
+  .btn-sm {
+    margin-right: 5px;
+  }
+  
+  .btn-primary {
+    margin-bottom: 10px; /* Espaço abaixo do botão de adicionar */
+  }
+  

@@ -1,12 +1,13 @@
 Projeto na versão .net 8 LTS 
-Necessario criar um banco de dados SQL e alterar a connection string para o banco de dados criado
-Necessario rodar a migration.
 
-Ha dois endpoints
 
-Post
-Atualiza a base de dados com a api do yahoo
+Executar docker compose para subir o rabbitMQ e o SQL
+Necessario criar um BD com o nome "B3"
 
-Get
-Retorna o modelo de dados com as porcentagem das variações do ativo
+O Work esta dentro da solution B3 junto com a api, 
 
+apos o rabbitMq e o banco esta criado é possivel executar em conjunto com a api executando .exe
+
+"B3\Jobs\TaskManagerConsumer\bin\Release\net8.0\publish"
+
+O front end esta em angular 

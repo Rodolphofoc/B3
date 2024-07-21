@@ -20,7 +20,7 @@ namespace Applications.Finance.Queries.Handlers
         {
             try
             {
-                var result = _taskRepository.GetAll();
+                var result = _taskRepository.GetAll().Where(x => !x.Deleted);
                 return await _response.CreateSuccessResponseAsync(result.ToList(), string.Empty);
             }
             catch (Exception)
