@@ -11,13 +11,14 @@
         <tr>
           <th>Descriçao</th>
           <th>Status</th>
-          <th></th>
+          <th>Data Criaçao</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let task of tasks">
           <td>{{ task.description }}</td>
           <td>{{ getStatusDescription(task.status) }}</td>
+          <td>{{ task.createdAt }}</td>
           <td>
             <!-- Botões de ação -->
             <a [routerLink]="['/edit', task.integrationId]" class="btn btn-secondary btn-sm">Edit</a>
